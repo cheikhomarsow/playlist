@@ -1,0 +1,68 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    {% set urlAction = "?action=reglog" %}
+    {% if from != '' %}
+       {% set urlAction = "?action=reglog&from="~ from %}
+    {% endif %}
+    {% if from != '' and token != '' %}
+        {% set urlAction = "?action=reglog&from="~ from ~ "&token=" ~ token %}
+    {% endif %}
+    <main class="reglog_page">
+        <div class="container_form">
+            <h2 class="title">Se connecter</h2>
+            {% if loginErrors is defined and loginErrors is not empty %}
+                <span class="error_block">{{ loginErrors }}</span><br>
+            {% endif %}
+
+            <form action="{{ urlAction }}" method="POST">
+                <div class="login_form" >
+                    <label for="email"><p>Votre adresse email: </p></label>
+                    <input type="text" id="email" name="email" placeholder="Votre adresse email">
+                </div>
+                <div class="login_form" >
+                    <label for="password"><p>Votre mot de passe : </p></label>
+                    <input id="password" type="password" name="password" placeholder="Mot de Passe*">
+                </div>
+                <div class="remember_me" >
+                    <label for="remember_me"><span>Se souvenir de moi : </span></label>
+                    <input type="checkbox" name="remember_me" placeholder="Mot de Passe*">
+                </div>
+                <button type="submit" name="login" class="button"><img src="assets/img/man-user.png">&nbsp;Se connecter</button>
+            </form>
+        </div>
+
+        <div class="container_form">
+            <h2 class="title">S'inscrire</h2>
+            {% if registerSuccess is defined %}
+                <span class="success_block">{{ registerSuccess }}</span>
+            {% endif %}
+            {% if registerErrors is defined and registerErrors is not empty %}
+                {% for error in registerErrors %}
+                    <span class="error_block">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+            <form action="{{ urlAction }}" method="POST">
+                <div class="login_form" >
+                    <label for="username"><p>Votre nom : </p></label>
+                    <input type="text" id="username" name="username" placeholder="Votre nom">
+                </div>
+                <div class="login_form" >
+                    <label for="emailReg"><p>Votre email : </p></label>
+                    <input id="emailReg" type="email" name="email" placeholder="Votre adresse email">
+                </div>
+                <div class="login_form" >
+                    <label for="passwordReg"><p>Votre mot de passe : </p></label>
+                    <input id="passwordReg" type="password" name="password" placeholder="Votre mot de Passe">
+                </div>
+                <div class="login_form" >
+                    <label for="VerifPasswordReg"><p>Répéter le mot de passe : </p></label>
+                    <input id="VerifPasswordReg" type="password" name="verifpassword" placeholder="Confirmation de votre mot de Passe">
+                </div>
+                <button type="submit" name="register" class="button"><img src="assets/img/man-user.png">&nbsp;S'inscrire</button>
+            </form>
+        </div>
+    </main>
+
+
+{% endblock %}

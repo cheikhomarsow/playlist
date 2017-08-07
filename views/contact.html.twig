@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    {% set username = '' %}
+    {% set email = '' %}
+    {% if user is defined and user is not empty %}
+        {% set username = user.username %}
+        {% set email = user.email %}
+    {% endif %}
+    <main class="contact_page">
+        <div class="container_form">
+            <h2 class="title">Me contacter</h2>
+            <form action="?action=contact" id="formContactMe" method="POST">
+                <span class="error_block error_contact_me"></span>
+                <div class="login_form" >
+                    <label for="username"><p>Votre nom : </p></label>
+                    <input type="text" id="username" name="username" value='{{ username }}' placeholder="Votre nom">
+                </div>
+                <div class="login_form" >
+                    <label for="email"><p>Votre email : </p></label>
+                    <input id="email" type="email" name="email" value='{{ email }}'  placeholder="Votre adresse email">
+                </div>
+                <div class="login_form" >
+                    <label for="sujet"><p>Sujet du mail : </p></label>
+                    <input  id="sujet" class="contentMeVal" type="text" name="sujet" placeholder="Sujet du mail">
+                </div>
+                <div class="login_form" >
+                    <label for="message"><p>Message : </p></label>
+                    <textarea id="message" class="contentMeVal" placeholder="Message" name="message"></textarea>
+                </div>
+                <!--<div class="g-recaptcha" data-sitekey="6LeMgisUAAAAACp7LoyBmxCGcy_FRLeCNQLMM6fp"></div>-->
+
+                <div class="waiting"></div>
+                <button type="submit" class="button"><img src="assets/img/send-button.png">&nbsp;&nbsp;Envoyer</button>
+            </form>
+        </div>
+    </main>
+
+    <!--<script src='https://www.google.com/recaptcha/api.js'></script>-->
+
+
+{% endblock %}

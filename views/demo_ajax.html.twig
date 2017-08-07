@@ -1,0 +1,27 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <main class='demo_ajax_page'>
+        <div class="container_form">
+            <h2 class="title">Démonstration - AJAX et XMLHttpRequest </h2>
+            <div class="return"><a href='?action=article&token=Z8OPK8CcJBU2eZD3FbHI'> Page de l'article </a></div><br><br>
+            <span class="success-block-login"></span>
+            <form class="position_form_login" action="?action=demo_ajax" name="login-form" method="POST">
+                <div class="login_form" >
+                    <span class="error_username"></span>
+                    <label for="username"><p>Username: </p></label>
+                    <input type="text" name="username" id="username" class="username" placeholder="Pseudo *"><br>
+                </div>
+                <div class="login_form" >
+                    <span class="error_password"></span>
+                    <label for="password"><p>Password: </p></label>
+                    <input type="password" name="password" id="password" placeholder="Mot de Passe *"><br>
+                </div>
+                <button type="submit"  class="button"><img src="assets/img/man-user.png">&nbsp;Valider</button>
+            </form>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="assets/script/ajax-login-demo.js"></script>
+
+{% endblock %}

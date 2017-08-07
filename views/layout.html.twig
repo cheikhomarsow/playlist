@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>Cheikh Omar SOW</title>
+        <link rel="icon" type="image/png" href="assets/img/infiniti.png">
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <meta property="og:url"           content="http://www.cheikhomarsow.ovh/?action=article&token={{ article.token }}" />
+        <meta property="og:type"          content="website" />
+        <meta property="og:title"         content="Cheikh Omar SOW" />
+        <meta property="og:description"   content="Parlons informatique" />
+        <meta property="og:image"         content="assets/img/infinity.png" />
+        <link rel="stylesheet" href="assets/style/style.css">
+        <link rel="stylesheet" href="assets/style/font-awesome/css/font-awesome.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="assets/script/script.js"></script>
+        <script src="assets/script/player.js"></script>
+
+    </head>
+    <body>
+    <header>
+        {% include 'partials/header.html.twig' %}
+    </header>
+        {% block content %}
+        {% endblock %}
+
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="title">Se connecter</p>
+            <form action="?action=login" id="formLogin" method="POST">
+                <span class="error_block error_login"></span>
+                <span class="success_block success_login"></span>
+                <div class="login_form" >
+                    <label for="usernameLog"><p>Votre adresse email: </p></label>
+                    <input type="text" id="usernameLog" name="username" placeholder="Votre adresse email">
+                </div>
+                <div class="login_form" >
+                    <label for="passwordLog"><p>Votre mot de passe : </p></label>
+                    <input id="passwordLog" type="password" name="password" placeholder="Mot de Passe*">
+                </div>
+                <button type="submit" name="login" class="button"><img src="assets/img/man-user.png">&nbsp;Se connecter</button>
+            </form>
+            <span id="registerBtn">Créer un compte</span>
+        </div>
+
+    </div>
+
+    <div id="registerModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="close">&times;</span>
+            <p class="title">S'inscrire</p>
+            <form action="?action=register" id="formRegister" method="POST">
+                <span class="error_block error_register"></span>
+                <span class="success_block success_register"></span>
+                <div class="login_form" >
+                    <label for="username"><p>Votre nom : </p></label>
+                    <input type="text" id="username" name="username" value='{{ username }}' placeholder="Votre nom">
+                </div>
+                <div class="login_form" >
+                    <label for="password"><p>Votre mot de passe : </p></label>
+                    <input id="password" type="password" name="password" placeholder="Mot de Passe*">
+                </div>
+                <div class="login_form" >
+                    <label for="repeat_password"><p>Confirmer le mot de passe : </p></label>
+                    <input id="repeat_password" type="password" name="repeat_password" placeholder="Confirmer le mot de passe*">
+                </div>
+                <button type="submit" name="register" class="button"><img src="assets/img/send-button.png">&nbsp;&nbsp;S'inscrire</button>
+            </form>
+        </div>
+
+    </div>
+
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+
+    <script>
+
+        var registerModale = document.getElementById('registerModal');
+        var modal = document.getElementById('myModal');
+
+        var registerBtn = document.getElementById("registerBtn");
+        var btn = document.getElementById("myBtn");
+
+        var span = document.getElementsByClassName("close")[0];
+        var registerSpan = document.getElementsByClassName("close")[1];
+
+
+
+
+        // Get the button that opens the modal
+
+        // Get the <span> element that closes the modal
+
+        // When the user clicks the button, open the modal
+        registerBtn.onclick = function() {
+            modal.style.display = "none";
+            registerModale.style.display = "block";
+        }
+
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        registerSpan.onclick = function() {
+            registerModale.style.display= "none";
+        };
+
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            if (event.target == registerModale) {
+                registerModale.style.display = "none";
+            }
+        };
+    </script>
+
+    </body>
+</html>

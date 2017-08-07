@@ -1,0 +1,29 @@
+routes:
+    home:       'Default:home'
+    search:     'Default:search'
+    pdf_generator:     'Default:pdf_generator'
+    logout:     'Security:logout'
+    register:     'Security:register'
+    login:     'Security:login'
+    user:       'User:user'
+    contact:    'Default:contact'
+    article:    'Default:article'
+    admin:       'Security:admin'
+    admin_users: 'Security:admin_users'
+    admin_articles: 'Security:admin_articles'
+    admin_comments: 'Security:admin_comments'
+    add_article: 'Article:add_article'
+    edit_article: 'Article:edit_article'
+    demo_ajax: 'Default:demo_ajax'
+    forum: 'Forum:forum'
+    questions_responses: 'Forum:questions_responses'
+
+
+
+defaut_route: 'home'
+
+db_config:
+    name: 'sikar'
+    host: 'localhost'
+    user: 'root'
+    pass: 'root'

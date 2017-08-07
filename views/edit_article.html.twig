@@ -1,0 +1,51 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <main class="edit_article_page">
+
+        {% if tokenExist == true %}
+            <div class="container_form">
+                {% if editArticleSuccess is defined and editArticleSuccess is not empty %}
+                    {% for message in editArticleSuccess %}
+                        <span class="success_block">{{ message }}</span><br>
+                    {% endfor %}
+                {% endif %}
+                {% if editArticleErrors is defined and editArticleErrors is not empty %}
+                    {% for message in editArticleErrors %}
+                        <span class="error_block">{{ message }}</span><br>
+                    {% endfor %}
+                {% endif %}
+                <h2 class="title">Modifier un article</h2>
+                <form action="?action=edit_article&token={{ article.token }}" method="POST" enctype="multipart/form-data">
+                    <div class="login_form" >
+                        <label for="title"><p>Titre : </p></label>
+                        <input id="title" class="input" type="text" name="title" value="{{ article.title }}">
+                    </div>
+                    <div class="login_form" >
+                        <label for="file"><p>Image : </p></label>
+                        <input type="file" class="input" id="file" name="file">
+                    </div>
+                    <textarea class="ckeditor" name="editor1" id="editor1">
+                        {{ article.content }}
+                    </textarea>
+                    <script>
+                        CKEDITOR.replace( 'editor1' );
+                    </script>
+                    <div class="login_form" >
+                        <p>Visible ?</p>
+                        <div id="radio">
+                            <label for="yes"><p>Oui : </p></label>
+                            <input type="radio" name="visible" checked value="1" id="yes">
+                            <label for="no"><p>Non : </p></label>
+                            <input type="radio" name="visible" value="0" id="no">
+                        </div>
+                    </div>
+                    <input type="text" name="id" class="none" value="{{ article.id }}">
+                    <button type="submit" class="button"><img src="assets/img/man-user.png">&nbsp;&nbsp;Modifier</button>
+                </form>
+            </div>
+            {% else %}
+                <div>Cet article n'est plus disponible</div>
+        {% endif %}
+    </main>
+{% endblock %}

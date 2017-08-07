@@ -1,0 +1,71 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <main class="search_page">
+
+        <div class="results_posts">
+            <h3 class="title">Résultats de recherche sur les articles</h3>
+            {% if articles is defined and articles is not empty %}
+                {% for article in  articles %}
+                    <div class="article_summary">
+                        <h5>
+                            {% autoescape false %}
+                                <a class="title_article" href="?action=article&token={{ article.token }}">
+                                    {{ article.title | striptags }}
+                                </a>
+                            {% endautoescape %}
+                        </h5>
+                        {% set comNb = article.id %}
+                        <p class="resume_autor">
+                            <img  class="me" src="assets/img/me.jpg" alt="img">
+                            <span class="autor">{{autor.username}}</span>&nbsp;
+                            <img  src="assets/img/calendar.png" alt="img">
+                            <span class="date">{{ article.date | date("M d Y") }}</span>&nbsp;
+                            <img class="icon_comment" src="assets/img/com.png">&nbsp;{{ commentsNumber[comNb] }}&nbsp;
+                            <img class="icon_comment" src="assets/img/eye.png">
+                            {{ article.countVisites }}
+                        </p>
+                        <a class="etc" href="?action=article&token={{ article.token }}">
+                            <img class="img" src="{{ article.file }}" alt="article_img">
+                        </a>
+                    </div>
+                {% endfor %}
+                {% else  %}
+                    <p class="message">{{ messageArticle }}</p>
+            {% endif %}
+        </div>
+        <div class="results_questions">
+            <h3 class="title">Résultats sur le forum</h3>
+            {% if questions is defined and questions is not empty %}
+                <div class="questions">
+                    <div class="subject">
+                        Sujet
+                    </div>
+                    <div class="response">
+                        Réponse
+                    </div>
+                    <div class="date">
+                        Date
+                    </div>
+                    <div class="content-questions">
+                        {% for question in questions %}
+                            <div class="subject-content">
+                                <a href="?action=questions_responses&token={{ question.token }}">{{ question.sujet }}</a>
+                            </div>
+                            <div class="response-content">
+                                {{ countAnswers[question.id] }}
+                            </div>
+                            <div class="date-content">
+                                {{ question.date | date("d/m/y") }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="zeroQuestions">
+                    <p class="message">{{ messageQuestion }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}
