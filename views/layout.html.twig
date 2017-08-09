@@ -16,14 +16,82 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="assets/script/script.js"></script>
         <script src="assets/script/player.js"></script>
+        <script src="assets/script/loader.js"></script>
 
     </head>
     <body>
     <header>
         {% include 'partials/header.html.twig' %}
     </header>
+    <div id="container">
+        <div class="search-box">
+            <form>
+                <input type="text" name="search" placeholder="Rechercher un sikar">
+            </form>
+            <div class='submenu' id="submenu">
+                <nav>
+                    <ul>
+                        <li><a id="khassida" href="#khassida">Khassida</a></li>
+                        <li><a href="#">Sous menu 2 </a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+        <div class='playlist'>
+            <div class="available-audios">
+                <div class="player">
+                    <audio class="audio-player" id="audio-player" src=""></audio>
+                    <div class="cover">
+                        <div class="controls">
+                            <button class="prev">
+                                <i class="fa fa-step-backward"></i>
+                            </button>
+                            <button class="play">
+                                <i class="fa fa-play"></i>
+                            </button>
+                            <button class="pause">
+                                <i class="fa fa-pause"></i>
+                            </button>
+                            <button class="stop">
+                                <i class="fa fa-stop"></i>
+                            </button>
+                            <button class="next">
+                                <i class="fa fa-step-forward"></i>
+                            </button>
+                        </div>
+                        <div class="timer">00:00</div>
+                        <div class="volume">
+                            <button class="volume-button volume-down">
+                                <i class="fa fa-volume-down"></i>
+                            </button>
+                            <button class="volume-button volume-up">
+                                <i class="fa fa-volume-up"></i>
+                            </button>
+                        </div>
+                        <progress class="progress" value="0" min="0" max="100" step="1"></progress>
+
+                    </div>
+                </div>
+                <div class="track-list">
+                    {% if audios is defined and audios is not empty %}
+                    <ul>
+                        {% for audio in audios %}
+                            <li class="track-info active" data-url="{{ audio.audio_path }}" data-cover="{{ audio.cover_path }}">
+                                <span class="title">{{ audio.artist }}</span>
+                                <span class="time"></span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
         {% block content %}
         {% endblock %}
+    </div>
+
 
 
     <div id="myModal" class="modal">

@@ -1,46 +1,32 @@
 {% extends 'layout.html.twig' %}
-
 {% block content %}
-
-    <main class="admin_page">
-        <div class="dashbord"><a href="?action=admin_users">Tableau de bord</a></div>
-        <div class="container_form">
-            <h2 class="title">Publier un article</h2>
-            {% if addArticleErrors is defined and addArticleErrors is not empty %}
-                {% for error in addArticleErrors %}
-                    <span class="error_block">{{ error }}</span><br>
-                {% endfor %}
-            {% endif %}
-            {% if addArticleSuccess is defined and addArticleSuccess is not empty %}
-                <span class="success_block">{{ addArticleSuccess }}</span><br>
-
-            {% endif %}
-            <form action="?action=add_article" method="POST" enctype="multipart/form-data">
-                <div class="login_form" >
-                    <label for="title"><p>Titre : </p></label>
-                    <input id="title" class="input" type="text" name="title" placeholder="Titre de l'article" ">
-                </div>
-                <div class="login_form" >
-                    <label for="file"><p>Image : </p></label>
-                    <input type="file" class="input" id="file" name="file">
-                </div>
-                <textarea class="ckeditor" name="editor1" id="editor1">
-                </textarea>
-                <script>
-                    CKEDITOR.replace( 'editor1' );
-                </script>
-                <div class="login_form" >
-                    <p>Visible ?</p>
-                    <div id="radio">
-                        <label for="yes"><p>Oui : </p></label>
-                        <input type="radio" name="visible" checked value="1" id="yes">
-                        <label for="no"><p>Non : </p></label>
-                        <input type="radio" name="visible" value="0" id="no">
+    <main class="content">
+        <div class="admin">
+            <div class="container_form">
+                {% if errors is defined %}
+                <span class="error_block">{{ errors | raw }}</span>
+                {% endif %}
+                <h2 class="title">Ajouter un fichier</h2>
+                <form action="?action=admin" method="POST" enctype="multipart/form-data">
+                    <div class="login_form" >
+                        <label for="audio"><p>Fichier : </p></label>
+                        <input id="audio" type="file" name="file[]" multiple>
                     </div>
-                </div>
-                <button type="submit" class="button"><img src="assets/img/man-user.png">&nbsp;&nbsp;Publier</button>
-            </form>
+                    <div class="login_form" >
+                        <label for="cover"><p>Cover : </p></label>
+                        <input id="cover" type="file" name="file[]" multiple>            </div>
+                    <div class="login_form" >
+                        <label for="artist"><p>Artiste : </p></label>
+                        <input id="artist" class="input" type="text" name="artist" placeholder="Artiste">
+                    </div>
+                    <div class="login_form" >
+                        <label for="title"><p>Titre : </p></label>
+                        <input id="title" class="input" type="text" name="title" placeholder="Titre">
+                    </div>
+                    <button type="submit" class="button"><img src="assets/img/add_audio.png">&nbsp;&nbsp;Ajouter</button>
+                </form>
+            </div>
         </div>
     </main>
-
 {% endblock %}
+

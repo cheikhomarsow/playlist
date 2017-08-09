@@ -1,0 +1,40 @@
+<div class="profile">
+    <div class="avatar-box">
+        <img src="{{ user.avatar }}" alt="avatar">
+        <div>Modifier la photo de profil</div>
+    </div>
+    <div class="contacts">
+        <div class="container_form">
+            <h2 class="title">Modifier mes coordonnées</h2>
+            <form action="?action=profile" method="POST">
+                <div class="login_form" >
+                    <label for="username"><p>Nom d'utilisateur : </p></label>
+                    <input id="username" type="text" class="input" name="username" value="{{ user.username }}">
+                </div>
+                <div class="login_form" >
+                    <label for="email"><p>Votre adresse email : </p></label>
+                    <input type="text" id="email" class="input" name="email" value="{{ user.email }}">
+                </div>
+                <div class="login_form" >
+                    <label for="phone"><p>Votre adresse email : </p></label>
+                    <input type="text" id="phone" class="input" name="phone" value="{{ user.phone }}">
+                </div>
+                <button type="submit" name="updateContact" class="button"><img src="assets/img/update.png">&nbsp;&nbsp;Modifier mes coordonnées</button>
+            </form>
+        </div>
+        <div class="container_form">
+            <h2 class="title">Modifier mon mot de passe</h2>
+            <form action="?action=user" method="POST">
+                <div class="login_form" >
+                    <label for="password"><p>Actuel mot de passe : </p></label>
+                    <input id="password" type="password" class="input" name="oldPassword" placeholder="Actuel mot de passe">
+                </div>
+                <div class="login_form" >
+                    <label for="verifpassword"><p>Nouveau mot de passe : </p></label>
+                    <input type="password" id="verifpassword" class="input" name="newPassword" placeholder="Nouveau mot de passe">
+                </div>
+                <button type="submit" name="updatePassword" class="button"><img src="assets/img/update.png">&nbsp;&nbsp;Modifier mon mot de passe</button>
+            </form>
+        </div>
+    </div>
+</div>

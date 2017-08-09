@@ -100,5 +100,7 @@ $(document).ready(function() {
     }
 
 
-
+    $('html').click(function() {
+        $('.nav-dropdown').hide();
+    });
 });

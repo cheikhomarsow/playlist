@@ -12,13 +12,46 @@ class DefaultController extends BaseController
     public function homeAction()
     {
         $userManager = UserManager::getInstance();
+
+        $audios = $userManager->audios();
+
+        if(!empty($_SESSION['user_id'])){
+            $admin = false;
+            $user_id = $_SESSION['user_id'];
+            $user = $userManager->getUserById($user_id);
+            if($user['isAdmin'] == 1){
+                $admin = true;
+            }
+        }
+        echo $this->renderView('home.html.twig',[
+            'user' => $user,
+            'admin' => $admin,
+            'audios' => $audios,
+        ]);
+    }
+    public function homeSyncAction()
+    {
+        $userManager = UserManager::getInstance();
         if(!empty($_SESSION['user_id'])){
             $user_id = $_SESSION['user_id'];
             $user = $userManager->getUserById($user_id);
         }else{
             $user = false;
         }
-        echo $this->renderView('home.html.twig',[
+        echo $this->renderView('homeSync.html.twig',[
+            'user' => $user
+        ]);
+    }
+    public function khassidaAction()
+    {
+        $userManager = UserManager::getInstance();
+        if(!empty($_SESSION['user_id'])){
+            $user_id = $_SESSION['user_id'];
+            $user = $userManager->getUserById($user_id);
+        }else{
+            $user = false;
+        }
+        echo $this->renderView('khassida.html.twig',[
             'user' => $user
         ]);
     }

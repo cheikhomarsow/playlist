@@ -23,8 +23,7 @@ class UserManager
     public function getUserById($id)
     {
         $id = (int)$id;
-        $data = $this->DBManager->findOne("SELECT * FROM users WHERE id = " . $id);
-        return $data;
+        return $this->DBManager->findOne("SELECT * FROM users WHERE id = " . $id);
     }
 
 
@@ -84,24 +83,8 @@ class UserManager
         $res['isFormGood'] = $isFormGood;
         $res['errors'] = $errors;
         $res['data'] = $data;
-        //exit(0);
-        //return false;
+
         return $res;
-
-        /*if($isFormGood)
-        {
-            echo(json_encode(array('success'=>true, 'data'=>$data), JSON_UNESCAPED_UNICODE ,http_response_code(200)));
-            $res['isFormGood'] = $isFormGood;
-            $res['errors'] = $errors;
-            $res['data'] = $data;
-            //exit(0);
-            return $res;
-
-        }else
-        {
-            echo(json_encode(array('error'=>false, 'error'=>$errors), JSON_UNESCAPED_UNICODE ,http_response_code(400)));
-            exit(0);
-        }*/
     }
 
 
@@ -121,8 +104,7 @@ class UserManager
 
     private function userHash($pass)
     {
-        $hash = password_hash($pass, PASSWORD_BCRYPT);
-        return $hash;
+        return password_hash($pass, PASSWORD_BCRYPT);
     }
 
     public function userRegister($data)
@@ -130,6 +112,8 @@ class UserManager
         $user['username'] = $data['username'];
         $user['password'] = $this->userHash($data['password']);
         $user['registerDate'] = $this->DBManager->getDatetimeNow();
+        $user['isAdmin'] = 0;
+        $user['avatar'] = 'assets/img/avatar.png';
         $this->DBManager->insert('users', $user);
     }
 
@@ -141,7 +125,7 @@ class UserManager
 
     public function userLogin($username)
     {
-        if($this->emailValid($username)){
+        if($this->usernameValid($username)){
             $data = $this->getUserByUsername($username);
             if ($data === false)
                 return false;
@@ -162,92 +146,73 @@ class UserManager
 
     }
 
-    public function checkContact($data){
+    public function audios(){
+        return $this->DBManager->findAllSecure("SELECT * FROM audios");
+    }
+
+    public function addAudio($data){
+        $audio['artist'] = $data['artist'];
+        $audio['title'] = $data['title'];
+        $audio['audio_path'] = 'uploads/cosinus/audios/'.$data['audio'];
+        $audio['cover_path'] = 'uploads/cosinus/covers/'.$data['cover'];
+        $audio['user_id'] = $_SESSION['user_id'];
+        $audio['date'] = $this->DBManager->getDatetimeNow();
+
+
+        if(move_uploaded_file($data['audio_tmp_name'],$audio['audio_path']) &&
+            move_uploaded_file($data['cover_tmp_name'],$audio['cover_path'])
+        ){
+            $this->DBManager->insert('audios', $audio);
+
+            chmod($audio['audio_path'], 0666);
+            chmod($audio['cover_path'], 0666);
+        }
+    }
+
+
+
+    public function checkAudio($data){
+
         $isFormGood = true;
-        $errors = [];
-        $res = [];
-
-        $email = $data['email'];
-        $user = $this->getUserById($_SESSION['user_id']);
-        $username = trim($data['username']);
+        $errors = '';
 
 
-        if(empty($username)){
-            $errors['username'] = 'Pseudo de 2 caractères minimum';
-            $isFormGood = false;
-        }
-        else {
-            if (strlen($username) < 2) {
-                $errors['username'] = 'Pseudo de 2 caractères minimum';
+        if(isset($_FILES['file']['name']) && count($_FILES['file']['name']) == 2){
+            if($_FILES['file']['name'][0] !== ''){
+                $data['audio'] = $_FILES['file']['name'][0];
+                $data['audio_tmp_name'] = $_FILES['file']['tmp_name'][0];
+            }else{
+                $errors .= 'Veillez choisir un audio'.'<br>';
                 $isFormGood = false;
             }
-        }
-        if(!$this->emailValid($email)){
-            $errors['email'] = "email non valide";
-            $isFormGood = false;
+
+            if($_FILES['file']['name'][1] !== ''){
+                $data['cover'] = $_FILES['file']['name'][1];
+                $data['cover_tmp_name'] = $_FILES['file']['tmp_name'][1];
+            }else{
+                $errors .= 'Veillez choisir un cover'.'<br>';
+                $isFormGood = false;
+            }
+
         }else{
-            $referee = $this->getUserByEmail($email);
-            if($referee == true && $user['id'] != $referee['id']){
-                $errors['email'] = "L'adresse email est déjà utilisé";
-                $isFormGood = false;
-            }
+            $errors .= 'Veillez choisir un audio et un cover'.'<br>';
+            $isFormGood = false;
+        }
+
+        if (!isset($data['artist']) || $data['artist'] == '') {
+            $errors .= 'Veillez remplir le champs artiste'.'<br>';
+            $isFormGood = false;
+        }
+
+        if (!isset($data['title']) || $data['title'] == '') {
+            $errors  .= 'Veillez remplir le champs titre'.'<br>';
+            $isFormGood = false;
         }
         $res['isFormGood'] = $isFormGood;
         $res['errors'] = $errors;
         $res['data'] = $data;
-
         return $res;
     }
-    public function updateContact($data){
-        $username = $data['username'];
-        $email = $data['email'];
-        $id = $_SESSION['user_id'];
-        return $this->DBManager->findOneSecure(
-            "UPDATE users SET username = :username, email = :email WHERE id=:id",
-            [
-                'email' => $email,
-                'username' => $username,
-                'id' => $id
-            ]);
-    }
-    public function checkPassword($data){
-        $isFormGood = true;
-        $errors = [];
-        $res = [];
-
-        $old = $data['oldPassword'];
-        $new = $data['newPassword'];
-
-        $user = $this->getUserById($_SESSION['user_id']);
-
-        if(!password_verify($old, $user['password'])){
-            $errors['password'] = "Le mot de passe n'est pas valide";
-            $isFormGood = false;
-        }else{
-            if(!$this->passwordValid($new)){
-                $errors['password'] = "Nouveau mot de passe non valide";
-                $isFormGood = false;
-            }
-        }
-
-
-        $res['isFormGood'] = $isFormGood;
-        $res['errors'] = $errors;
-        $res['data'] = $data;
-
-        return $res;
-    }
-    public function updatePassword($data){
-        $new = $this->userHash($data['newPassword']);
-        $id = $_SESSION['user_id'];
-        return $this->DBManager->findOneSecure(
-            "UPDATE users SET password = :new WHERE id=:id",
-            [
-                'new' => $new,
-                'id' => $id
-            ]);
-    }
-
     public function checkRegister($data){
         header('Content-Type: application/json; charset=utf-8');
         header('Access-Control-Allow-Origin: *');
@@ -333,12 +298,5 @@ class UserManager
         }
     }
 
-    //prend en paramètre l'id de l'utilisateur
-    public function deleteTokens($user_id)
-    {
-        return $this->DBManager->findOneSecure("DELETE FROM auth_tokens WHERE user_id = :user_id",
-            ['user_id' => $user_id]
-        );
-    }
 
 }
